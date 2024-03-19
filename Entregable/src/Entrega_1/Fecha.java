@@ -81,24 +81,22 @@ public record Fecha(Integer anio, Integer mes, Integer dia) {
     
 	// METODOS DERIVADOS
 	public String nombreMES() {
-        if (this.mes >= 1 && this.mes <= 12) {
-            String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-            return meses[this.mes - 1];
-        } else {
-            throw new IllegalArgumentException("El mes está fuera del rango válido (1-12).");
-        }
+		
+		assert this.mes >= 1 && this.mes <= 12 : "El mes está fuera del rango válido (1-12).";
+		String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+        		"Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+        return meses[this.mes - 1];
+        
     }
 	
 	public String diaSemana() {
-		if (this.dia >= 1 && this.dia <= 31) {
-            String[] dias = {"Sabado", "Domingo", "Lunes","Martes","Miercoles","Jueves","Viernes"};
-            return dias[this.al_Zeller(this.anio, this.mes, this.dia)];
-        } else {
-            throw new IllegalArgumentException("El dia está fuera del rango válido (1-31).");
-        }
+		
+		assert this.dia >= 1 && this.dia <= 31 : "El dia está fuera del rango válido (1-31).";
+		String[] dias = {"Sabado", "Domingo", "Lunes","Martes","Miercoles","Jueves","Viernes"};
+        return dias[this.al_Zeller(this.anio, this.mes, this.dia)];
 	}
 	
-	public Fecha sumarDIAS(Integer diasEXTRA) {
+	public Fecha sumarDIAS(int diasEXTRA) {
 		Integer dia_actual = this.dia;
 		Integer mes_actual = this.mes;
 		Integer anio_actual = this.anio;
@@ -107,23 +105,21 @@ public record Fecha(Integer anio, Integer mes, Integer dia) {
 			 Integer dias_mes_actual = diasEnMes(anio_actual, mes_actual);
 			 Integer dias_restantes_mes = dias_mes_actual - dia_actual + 1;
 
-			 if (diasEXTRA >= dias_restantes_mes) {
-				 diasEXTRA -= dias_restantes_mes;
+			 if (diasEXTRA > dias_restantes_mes) {
+				 diasEXTRA -= (dias_restantes_mes+1);
 			     dia_actual = 1;
 			     mes_actual += 1;
 
 			     if (mes_actual > 12) {
 			    	 mes_actual = 1;
 			         anio_actual += 1;
-			     }else {
-			    	 dia_actual += diasEXTRA;
-				     diasEXTRA = 0;
 			     }
 			                
+			 }else {
+		    	 dia_actual += diasEXTRA;
+			     diasEXTRA = 0;
 			 }
-			                
 		}
-		
 		return Fecha.of(anio_actual, mes_actual, dia_actual);
            
 		
