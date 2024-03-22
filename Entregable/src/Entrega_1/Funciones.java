@@ -1,5 +1,6 @@
 package Entrega_1;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,34 +22,33 @@ public class Funciones{
 	}
 	
 	// METODO PARA REALIZAR LA FACTORIZACION
-	private static Long numFactorial(Integer num) {
-		Long result = 1L;
-		for(int i = 1; i <= num; i++) {
-			result *= i;
-		}
-		return result;
-	}
 	
 	public static Long numeroCombinatorio(Integer num1, Integer num2) {
-		// COMPROBAR QUE EL PRIMER NUMERO SEA MAYOR AL SEGUNDO
-		if(num1 <= num2 ) {
-			throw new IllegalArgumentException("El pruimer numero debe ser mayor que el segundo");
-		}
-		
-		// FORMULA PARA EL NUMERO COMBINATORIO -> (num1!) / num2! * (num1 - num2)!
-		Integer resta = num1 - num2;
-		Long uno = numFactorial(num1);
-		Long dos = numFactorial(num2);
-		Long tres = numFactorial(resta);
-		
-		return (uno / (dos * tres));
+	    if(num1 < num2 ) {
+	        throw new IllegalArgumentException("El primer numero debe ser mayor que el segundo");
+	    }
+	    
+	    Long uno = numFactorial(num1);
+	    Long dos = numFactorial(num2);
+	    Long tres = numFactorial(num1 - num2);
+	    
+	    
+	    return (uno / (dos * tres));
+	}
+
+	private static Long numFactorial(Integer num) {
+	    Long result = 1L;
+	    for(int i = 1; i <= num; i++) {
+	        result *= i;
+	    }
+	    return result;
 	}
 	
 	
 	
 	private static Double res_Sumatoria(Integer num1, Integer num2, int i) {
 		
-		return (Math.pow(-1,i)) * numeroCombinatorio(num2, i) * Math.pow((num2 - i),num1);
+		return (Math.pow(-1,i) * numeroCombinatorio(num2, i).doubleValue() * Math.pow((num2 - i),num1));
 	}
         
 	
@@ -56,13 +56,13 @@ public class Funciones{
 	public static Double funcionS(Integer num1, Integer num2) {
 		
 		// COMPROBAR QUE EL PRIMER NUMERO SEA MAYOR AL SEGUNDO
-		if(num1 <= num2 ) {
-			throw new IllegalArgumentException("El pruimer numero debe ser mayor que el segundo");
+		if(num1 < num2) {
+			throw new IllegalArgumentException("El primer numero debe ser mayor que el segundo");
 		}
 		
 		//
 		Long den = numFactorial(num2);
-		Long div = 1/den;
+		Double div = 1.0/den;
 		Double res1 = 0.;
 		
 		// FUNCION DE LA SUMATORIA
@@ -73,6 +73,7 @@ public class Funciones{
 		return (div * res1);
 	}
 	
+	/*
 	public static List<Integer> diferenciaConsecutiva(List<Integer> list){
 		
 		// COMPROBAR QUE EL PRIMER NUMERO SEA MAYOR AL SEGUNDO
@@ -106,6 +107,60 @@ public class Funciones{
 			
 			return cadenaMASLarga;
 		}
+	}
+	*/
+	
+	// ------------------ EJERCICIOS DE LA DEFENSA ------------------------------
+	// A)
+	public static Long funcion_P2(Integer n, Integer k) {
+		
+		
+		// COMPROBAR QUE EL PRIMER NUMERO SEA MAYOR AL SEGUNDO
+		if(n < k) {
+			throw new IllegalArgumentException("El primer numero (n) debe ser mayor o igual que el segundo (k)");
+		}
+		Long resul = 1L;
+		for(int i=0; i<=k-2; i++) {
+			if(i < k+1) {
+				resul *= (n - i);
+			}else {
+				break;
+			}
+		}
+		return resul;
+	}
+	
+	// B)
+	public static Long funcion_C2(Integer n, Integer k) {
+		// COMPROBAR QUE EL PRIMER NUMERO SEA MAYOR AL SEGUNDO
+		if(n < k) {
+			throw new IllegalArgumentException("El primer numero (n) debe ser mayor que el segundo (k)");
+		}
+		Integer sum = k + 1;
+		return numeroCombinatorio(n,sum);
+	}
+	
+	// C)
+	public static Double funcionS2(Integer n, Integer k) {
+		// COMPROBAR QUE EL PRIMER NUMERO SEA MAYOR AL SEGUNDO
+		if(n < k) {
+			throw new IllegalArgumentException("El primer numero (n) debe ser mayor o igual que el segundo (k)");
+		}
+		Integer sum = k+2;
+		Long num = numFactorial(3);
+		Long den = numFactorial(5);
+		Double div = (num.doubleValue())/den;
+		
+		Double rest = 0.00;
+		for(int i=0; i<=k; i++) {
+			rest += sumatoria(n,k,i);
+		}
+		
+		return (div * rest);
+	}
+	
+	private static Double sumatoria(Integer n, Integer k, int i) {
+		return (Math.pow(-1,i) * numeroCombinatorio(k,i).doubleValue() * Math.pow((k-i), n));
 	}
 		
 }

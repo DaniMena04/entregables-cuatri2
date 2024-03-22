@@ -11,7 +11,6 @@ public class TestFecha {
 		// Crear una instancia de Fecha
         Fecha fecha = Fecha.of(2024, 3, 19); // Año, Mes, Día
         
-        
         // Probar el método parse
         Fecha fechaParseada = Fecha.parse("2024-03-19");
         System.out.println("Fecha parseada: " + fechaParseada);
@@ -24,7 +23,7 @@ public class TestFecha {
         
         System.out.println("Fecha con días restados: " +  fecha.restarDIAS(5));
         
-		/*
+		
         // Probar el método nombreMes
         String nombreMes = fecha.nombreMES();
         System.out.println("Nombre del mes: " + nombreMes);
@@ -44,7 +43,13 @@ public class TestFecha {
         // Probar el método diferenciaEnDias
         Integer diferenciaDias = fecha.diferenciaEnDias(Fecha.of(2024, 3, 24));
         System.out.println("Diferencia en días: " + diferenciaDias);
-		*/
+        
+        
+        
+     // ------------------------------------------------
+     	System.out.println("EJECUCION DE LOS EJERCICIOS DE LA DEFENSA");
+     	System.out.println(fecha.restarDiasFechaDada(Fecha.of(2024, 3, 22), 50));
+
 	}
 
 }

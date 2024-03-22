@@ -174,4 +174,42 @@ public record Fecha(Integer anio, Integer mes, Integer dia) {
 		        
 		return "[" + dia_semana + ", " + numDia + " de " + nomMES + " del " + anio + "]";
 	}
+	
+	
+	// --------------- EJERCICIOS DE LA DEFENSA -----------------------
+	// D)
+	public Fecha restarDiasFechaDada(Fecha otraFecha, Integer numDIAS) {
+		
+		if(numDIAS <= 0 || numDIAS >= 1000 ) {
+	        throw new IllegalArgumentException("El numDIAS debe ser positivo y debe tener como maximo 3 digitos");
+	    }
+		
+		
+		Integer dia_actual = otraFecha.dia;
+		Integer mes_actual = otraFecha.mes;
+		Integer anio_actual = otraFecha.anio;
+		
+		while (numDIAS > 0) {
+			 if(numDIAS >= dia_actual) {
+				 numDIAS -= dia_actual;
+				 mes_actual -= 1;
+				 
+				 if(mes_actual < 1) {
+					 mes_actual = 12;
+					 anio_actual -= 1;
+				 }
+				 
+				 dia_actual = diasEnMes(anio_actual, mes_actual);
+			                
+			 }else {
+				 dia_actual -= numDIAS;
+				 numDIAS = 0;
+			 }
+			                
+		}
+		
+		return Fecha.of(anio_actual, mes_actual, dia_actual);
+		
+	}
+
 }
