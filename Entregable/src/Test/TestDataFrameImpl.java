@@ -73,7 +73,7 @@ public class TestDataFrameImpl {
 		
 		System.out.println("Pruebas de row:\n");
 		System.out.println("Fila de índice 5:");
-		System.out.println(d.row(5));
+		System.out.println(d.row(4));
 		System.out.println("\nFila en la que la columna 'Id' tiene el valor 6:");
 		System.out.println(d.row("6","Id"));
 		

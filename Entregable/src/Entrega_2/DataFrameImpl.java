@@ -376,7 +376,7 @@ public class DataFrameImpl implements DataFrame {
 			int indiceFila = -1;
 		    for (int i = 0; i < rows.size(); i++) {
 		        List<String> datosFila = rows.get(i);
-		        if (datosFila.get(4).equals(row)) { // Suponiendo que la primera columna contiene los identificadores de fila
+		        if (datosFila.get(4).equals(row)) { // Suponiendo que la cuarta columna contiene los identificadores de fila
 		            indiceFila = i;
 		            break;
 		        }
@@ -387,9 +387,7 @@ public class DataFrameImpl implements DataFrame {
 		        throw new IllegalArgumentException("Fila no encontrada: " + row);
 		    }
 
-		    // Recuperar el valor de la columna especificada para la fila encontrada
-		    int indiceColumna = columIndex.get(colum);
-		    return Collections.singletonList(rows.get(indiceFila).get(indiceColumna));
+		    return rows.get(indiceFila);
 			
 		}
 		@Override
@@ -412,7 +410,7 @@ public class DataFrameImpl implements DataFrame {
 			List<String> columNames = new ArrayList<>(this.columNames);
 			Map<String,Integer> columIndex = new HashMap<>(this.columIndex);
 			List<List<String>> rows = new ArrayList<>(this.rows);
-			return DataFrameImpl.of1(columNames,columIndex,rows.subList(0, n));
+			return of1(columNames,columIndex,rows.subList(0, n));
 		}
 		@Override
 		public DataFrame tail() {
@@ -495,26 +493,21 @@ public class DataFrameImpl implements DataFrame {
 			List<List<String>> rn = IntStream.range(0, nr).boxed()
 					.map(r->List2.concat(rows.get(r),List.of(datos.get(r))))
 					.toList();
-			return DataFrameImpl.of1(columNames,columIndex,rn);
+			return of1(columNames,columIndex,rn);
 		}
 		@Override
 		public DataFrame addCalculatedColum(String newColum, Function<List<String>, String> f) {
 			// Se calcula a partir del método anterior obteniendo la columna a añadir a través del atributo row y el parámetro f
 			// TODO
-			assert columIndex.containsKey(newColum) : "La columna"+newColum+"ya existe en el DataFrame";
-			List<String> calValues = new ArrayList<>();
-			for(List<String> row: rows) {
-				calValues.add(f.apply(row));
-			}
+			assert columIndex.containsKey(newColum) : "La columna"+newColum+"NO existe en el DataFrame";
+			// Obtener los datos calculados para la nueva columna aplicando la función 'f' a cada fila
+		    List<String> calculatedData = this.rows.stream()
+		                                           .map(f)
+		                                           .collect(Collectors.toList());
+
+		    // Utilizar el método 'addColumn' para añadir la nueva columna calculada al DataFrame
+		    return this.addColum(newColum, calculatedData);
 			
-			columNames.add(newColum);
-			columIndex.put(newColum, columNames.size()-1);
-			
-			for(int i=0; i<rows.size();i++) {
-				rows.get(i).add(calValues.get(i));
-			}
-			
-			return of1(columNames,columIndex,rows);
 		}
 		@Override
 		public DataFrame removeColum(String colum) {
@@ -561,17 +554,13 @@ public class DataFrameImpl implements DataFrame {
 		}
 		//
 		
-		public static void main(String[] args) {
-			// TODO Auto-generated method stub
-			DataFrameImpl p = DataFrameImpl.parse1("C:\\Users\\Usuario\\git\\entrega-02-JAVA\\Entregable\\src\\ficheros\\personas (1).csv");
-			System.out.println(p);
-			System.out.println(p.columNames());
-			System.out.println(p.columNumber());
-			System.out.println(p.colum("Apellidos"));
-			System.out.println(p.colum(3));
-			
-			System.out.println(p.cell(2, "Nombre"));
-			
-			
-		}
+		
+		
+/*
+ * 		EJERCICIOS DE LA DEFENSA 2
+ */
+		// EJERCICIO 1
+		// EJERCICIO 2
+		// EJERCICIO 3
+		// EJERCICIO 4.
 }
